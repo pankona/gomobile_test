@@ -107,12 +107,13 @@ func onStart(glctx gl.Context) {
 
 var triangleData = f32.Bytes(binary.LittleEndian,
 	0.0, 0.4, 0.0, // top left
+	0.4, 0.4, 0.0, // top right
 	0.0, 0.0, 0.0, // bottom left
 	0.4, 0.0, 0.0, // bottom right
 )
 
 func onPaint(glctx gl.Context, sz size.Event) {
-	glctx.ClearColor(1, 0, 0, 1)
+	glctx.ClearColor(1, 1, 1, 1) // background white
 	glctx.Clear(gl.COLOR_BUFFER_BIT)
 
 	glctx.UseProgram(program)
@@ -128,7 +129,9 @@ func onPaint(glctx gl.Context, sz size.Event) {
 	glctx.BindBuffer(gl.ARRAY_BUFFER, buf)
 	glctx.EnableVertexAttribArray(position)
 	glctx.VertexAttribPointer(position, coordsPerVertex, gl.FLOAT, false, 0, 0)
-	glctx.DrawArrays(gl.TRIANGLES, 0, vertexCount)
+	//glctx.DrawArrays(gl.TRIANGLES, 0, vertexCount)
+	glctx.DrawArrays(gl.TRIANGLE_STRIP, 0, vertexCount)
+
 	glctx.DisableVertexAttribArray(position)
 
 	fps.Draw(sz)
@@ -143,7 +146,7 @@ func onStop(glctx gl.Context) {
 
 const (
 	coordsPerVertex = 3
-	vertexCount     = 3
+	vertexCount     = 4
 )
 
 const vertexShader = `#version 100
